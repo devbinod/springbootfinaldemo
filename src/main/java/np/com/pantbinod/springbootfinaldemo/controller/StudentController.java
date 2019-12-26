@@ -1,57 +1,44 @@
 package np.com.pantbinod.springbootfinaldemo.controller;
 
-import np.com.pantbinod.springbootfinaldemo.model.Student;
+import np.com.pantbinod.springbootfinaldemo.model.dto.StudentDto;
+import np.com.pantbinod.springbootfinaldemo.model.entities.Student;
 import np.com.pantbinod.springbootfinaldemo.repository.StudentRepository;
+import np.com.pantbinod.springbootfinaldemo.services.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class StudentController {
 
 
-    private StudentRepository repository;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private StudentRepository studentRepository;
 
-    public StudentController(StudentRepository repository) {
-        this.repository = repository;
+    @GetMapping("/students")
+    public List<Student> getAllStudent(){
+        return studentRepository.findAll();
     }
 
-    @GetMapping(value = "/students")
-    public List<Student> getAllStudent(@RequestParam(required = false, value = "fname") String firstName,
-                                       @RequestParam(required = false,value = "lname") String lastName
-                                       ){
-        if(firstName!=null) return repository.findByFirstName(firstName);
-        else if(lastName!=null) return repository.findByLastName(lastName);
-        return repository.findAll();
+    @PostMapping("/students")
+    public void saveStudent(@RequestBody StudentDto studentDto){
+        System.out.println( studentService.save(studentDto));;
     }
 
-    @GetMapping(value = "/students/{id}")
-    public Optional<Student> getSingleStudent(@PathVariable int id){
-        return repository.findById(id);
-    }
-
-    @PostMapping(value = "/students")
-    public void getAllStudent(@RequestBody Student student){
-        repository.saveAndFlush(student);
+    @PutMapping("/students/{id}")
+    public void updateStudent(@RequestBody StudentDto studentDto, @PathVariable Long id){
+       studentDto.setId(id);
+        System.out.println(studentDto.toString());
+        studentService.save(studentDto);
     }
 
 
-    @PutMapping(value = "/students/{id}")
-    public void updateStudent(@PathVariable int id, @RequestBody Student student){
-        System.out.println("id");
-        System.out.println(student.toString());
-        student.setId(id);
-        repository.saveAndFlush(student);
+    @DeleteMapping("/students/{id}")
+    public void deleteStudent(@PathVariable Long id){
+        studentService.delete(id);
     }
-
-
-    @DeleteMapping(value = "/students/{id}")
-    public void deleteStudent(@PathVariable int id){
-      repository.deleteById(id);
-    }
-
-
-
 
 }
