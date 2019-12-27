@@ -12,15 +12,18 @@ import java.util.List;
 @RestController
 public class StudentController {
 
-
     @Autowired
     private StudentService studentService;
-    @Autowired
-    private StudentRepository studentRepository;
 
     @GetMapping("/students")
-    public List<Student> getAllStudent(){
-        return studentRepository.findAll();
+    public List<StudentDto> getAllStudent(){
+
+        return studentService.findAll();
+    }
+
+    @GetMapping("/students/{id}")
+    public StudentDto getSingleStudent(@PathVariable Long id){
+        return studentService.findById(id );
     }
 
     @PostMapping("/students")

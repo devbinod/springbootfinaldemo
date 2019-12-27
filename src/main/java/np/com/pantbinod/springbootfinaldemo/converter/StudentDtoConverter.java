@@ -21,8 +21,8 @@ public class StudentDtoConverter extends BaseConverter<Student, StudentDto>  {
     public Student convertDtoToEntity(StudentDto dto) {
 
         if(dto ==  null) return null;
-        Student student = copyConvertDtoToEntity(dto);
-        return student;
+        return copyConvertDtoToEntity(dto);
+
     }
 
     @Override
