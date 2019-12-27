@@ -30,6 +30,7 @@ public class ProductServiceImpl  implements ProductService<ProductDto> {
     public void update(ProductDto productDto) {
         Product product =productConverter.convertDtoToEntity(productDto).setStatus(productDto.getStatus());
         product.setVersion(productRepository.findById(product.getId()).get().getVersion());
+
         productRepository.saveAndFlush(product);
 
     }
