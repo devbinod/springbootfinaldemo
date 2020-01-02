@@ -2,7 +2,12 @@ package np.com.pantbinod.springbootfinaldemo.model.entities;
 
 import np.com.pantbinod.springbootfinaldemo.model.common.AbstractEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Student extends AbstractEntity {
@@ -14,6 +19,16 @@ public class Student extends AbstractEntity {
     private String phoneNumber;
     private int rollNo;
     private String address;
+
+    private String fullName;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -73,5 +88,27 @@ public class Student extends AbstractEntity {
                 ", rollNo=" + rollNo +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.fullName = getFullNames();
+
+    }
+
+
+    @PrePersist
+    public void prePersisten() {
+        this.fullName = getFullNames();
+
+    }
+
+    private String getFullNames() {
+        if (this.middleName != null)
+            return this.firstName + " " + this.middleName + " " + this.lastName;
+        else
+            return this.firstName + " " + this.lastName;
+
+
     }
 }
