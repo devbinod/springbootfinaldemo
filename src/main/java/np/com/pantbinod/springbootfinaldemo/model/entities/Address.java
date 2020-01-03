@@ -1,10 +1,9 @@
 package np.com.pantbinod.springbootfinaldemo.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import np.com.pantbinod.springbootfinaldemo.model.common.AbstractEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Address extends AbstractEntity {
@@ -12,10 +11,28 @@ public class Address extends AbstractEntity {
     private String district;
     private String state;
     private int wardNo;
+    private boolean isTemporary;
 
-
-    @OneToOne(optional = false)
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    @JsonIgnore
     private Person person;
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public boolean isTemporary() {
+        return isTemporary;
+    }
+
+    public void setTemporary(boolean temporary) {
+        isTemporary = temporary;
+    }
 
     public String getDistrict() {
         return district;
@@ -41,11 +58,4 @@ public class Address extends AbstractEntity {
         this.wardNo = wardNo;
     }
 
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
 }

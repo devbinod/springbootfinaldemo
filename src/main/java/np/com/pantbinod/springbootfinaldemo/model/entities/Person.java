@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import np.com.pantbinod.springbootfinaldemo.model.common.AbstractEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Person extends AbstractEntity {
@@ -12,16 +14,14 @@ public class Person extends AbstractEntity {
     private String firstName;
     private String lastName;
 
-    @OneToOne
-    @JsonIgnore
-    private Address address;
+    @OneToMany(mappedBy = "person")
+    private List<Address> address;
 
-
-    public Address getAddress() {
+    public List<Address> getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(List<Address> address) {
         this.address = address;
     }
 
