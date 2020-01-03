@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 public class BaseConverter<E,D> implements ISingleEntryConverter<E,D>, IListEntryConverter<E,D>{
    
+   
+   
     @Override
     public D convertEntityToDto(E entity) {
         return null;
