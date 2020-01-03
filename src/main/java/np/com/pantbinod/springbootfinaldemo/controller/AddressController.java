@@ -5,10 +5,7 @@ import np.com.pantbinod.springbootfinaldemo.model.entities.Person;
 import np.com.pantbinod.springbootfinaldemo.repository.AddressRepository;
 import np.com.pantbinod.springbootfinaldemo.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,18 +18,21 @@ public class AddressController {
     @Autowired
     private PersonRepository personRepository;
 
-    @GetMapping("/address")
-    public List<Address> getAll(){
-        return addressRepository.findAll();
+    @GetMapping("/persons/{id}/addresses")
+    public List<Address> getAll(@PathVariable Long id,@RequestParam(required = false, name = "temp") boolean isTemp){
+
+        return addressRepository.findByPersonId(id);
     }
 
-    @PostMapping("/address")
-    public void getAll(@RequestBody Address address){
+    @PostMapping("/persons/{id}/addresses")
+    public void getAll(@PathVariable Long id, @RequestBody Address address){
 
-        Address address1 = addressRepository.save(address);
-        Person person = personRepository.findById(address1.getPerson().getId()).get();
-        person.setAddress(address);
-        personRepository.save(person);
+        personRepository.findById(id).map(person -> {
+           address.setPerson(person);
+           return addressRepository.saveAndFlush(address);
+
+
+        });
 
 
 
